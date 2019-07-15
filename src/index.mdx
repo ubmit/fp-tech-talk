@@ -1,20 +1,25 @@
-import gistia from './themes/gistia'
-import { Split, Invert } from '@mdx-deck/layouts'
-import { Appear, Image } from '@mdx-deck/components'
+import gistia from "./themes/gistia";
+import { Split, Invert } from "@mdx-deck/layouts";
+import { Appear, Image } from "@mdx-deck/components";
+import { syntaxHighlighter } from "mdx-deck/themes";
 
-export const themes = [gistia];
+export const themes = [syntaxHighlighter, gistia];
 
 # tech talk #2
+
 ## functional programming in JS
+
 ### guilherme de andrade
 
 ---
 
 # what is this talk about?
+
 ## SPOILER ALERT
 
 ---
-import Box from './components/box';
+
+import Box from "./components/box";
 
 <Image
   src='images/marie-kondo.jpg'
@@ -24,15 +29,14 @@ import Box from './components/box';
     justifyContent: 'center'
   }}>
 
-  <Box>
-    about things that bring me joy!
-  </Box>
+<Box>about things that bring me joy!</Box>
 
 </Image>
 
-___
+---
 
 # got curious?
+
 <ul>
   <Appear>
     <li>math</li>
@@ -55,36 +59,41 @@ ___
 
 ---
 
-> “I've been hearing all the fuzz about *functional programming (fp)* and all the cool kids have been talking about it lately. is this the *latest netflix's tv show*?”
+> “I've been hearing all the fuzz about _functional programming (fp)_ and all the cool kids have been talking about it lately. is this the _latest netflix's tv show_?”
 
 ---
 
-# nope! *fp* is as old as my *grandma*
+# nope! _fp_ is as old as my _grandma_
 
 ---
-
-<Split>
 
 <FullScreenCode
   style={{
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontSize: '20px'
   }}>
 
-  ```
-    <Button>
-      Beep
-    </Button>
-  ```
+```
+const juices = {
+  maracuja: '$1.50',
+  pitanga: '$1.0',
+  graviola: '$2.0',
+  caja: '$1.5'
+};
+
+// imperative way
+const getJuicePrice = str => {
+  const trimmed = str.trim()
+  const withoutAccents = trimmed.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  return juices[withoutAccents] || 'sorry, but this juice is not available!'
+}
+```
 
 </FullScreenCode>
 
-  <button>65</button>
-
-</Split>
-
-___
+---
 
 > “oh ok, that sounds cool, BUT... does it mean I need to throw away everything I've learned in all those years programming in [insert your preferable non-fp oriented programming language] if I want to dive into fp?”
 
@@ -153,14 +162,14 @@ no, you do not! however, since most of us are used to imperative programming, yo
 
 ---
 
-# (some code using map, filter and reduce)
+(some code using map, filter and reduce)
 
 ---
 
-# (talk about immutability x performance)
+(talk about immutability x performance)
 
-## (also maybe talk about the tree thing that reutilize nodes to save cpu/ram usage)
+(also maybe talk about the tree thing that reutilize nodes to save cpu/ram usage)
 
 ---
 
-# (discuss about JS as a fp capable language)
+(discuss about JS as a fp capable language)
