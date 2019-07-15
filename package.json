@@ -1,5 +1,11 @@
 {
   "devDependencies": {
     "mdx-deck": "^2.5.0"
+  },
+  "scripts": {
+    "start": "mdx-deck src/index.mdx"
+  },
+  "dependencies": {
+    "@rebass/emotion": "^3.1.1"
   }
 }

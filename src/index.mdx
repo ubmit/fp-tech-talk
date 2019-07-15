@@ -1,0 +1,166 @@
+import gistia from './themes/gistia'
+import { Split, Invert } from '@mdx-deck/layouts'
+import { Appear, Image } from '@mdx-deck/components'
+
+export const themes = [gistia];
+
+# tech talk #2
+## functional programming in JS
+### guilherme de andrade
+
+---
+
+# what is this talk about?
+## SPOILER ALERT
+
+---
+import Box from './components/box';
+
+<Image
+  src='images/marie-kondo.jpg'
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}>
+
+  <Box>
+    about things that bring me joy!
+  </Box>
+
+</Image>
+
+___
+
+# got curious?
+<ul>
+  <Appear>
+    <li>math</li>
+    <li>juice</li>
+    <li>dürum falafel</li>
+    <li>keyboards</li>
+  </Appear>
+</ul>
+
+---
+
+# also...
+
+<ul>
+  <Appear>
+    <li>functional programming</li>
+    <li>JS</li>
+  </Appear>
+</ul>
+
+---
+
+> “I've been hearing all the fuzz about *functional programming (fp)* and all the cool kids have been talking about it lately. is this the *latest netflix's tv show*?”
+
+---
+
+# nope! *fp* is as old as my *grandma*
+
+---
+
+<Split>
+
+<FullScreenCode
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}>
+
+  ```
+    <Button>
+      Beep
+    </Button>
+  ```
+
+</FullScreenCode>
+
+  <button>65</button>
+
+</Split>
+
+___
+
+> “oh ok, that sounds cool, BUT... does it mean I need to throw away everything I've learned in all those years programming in [insert your preferable non-fp oriented programming language] if I want to dive into fp?”
+
+---
+
+no, you do not! however, since most of us are used to imperative programming, you would need to refactor your knowledge, so it could fit the fp way!
+
+---
+
+# this slide should talk about what you can "save" from imperative programming and which new skills you need to develop
+
+---
+
+# functional programming's most primitive principles:
+
+- pure functions
+- immutability
+
+---
+
+# pure functions
+
+## this slide should have the nazare's meme
+
+---
+
+# yep, that's exactly what it is looking like: math time!
+
+## _what on earth this pure function thing has to do with math???_
+
+## _SPOILER ALERT_
+
+## EVERYTHING!
+
+---
+
+# first of all, let's talk about what is considered a function in the awesome math world
+
+## a function is nothing more than a relation between two conjuntos numéricos, where one cojunto is mapped to the other one
+
+### however, this mapping has to follow some basic rules
+
+---
+
+# a given input will alawys return the same output (draw a vann diagram somehow to explain this)
+
+---
+
+# (I need to remember if there is any other rule hahaha)
+
+---
+
+# (this should contain some code comparing impure and pure functions)
+
+```jsx
+<div>hey there!</div>
+```
+
+---
+
+# (talk about typed languages and use the elephant example)
+
+---
+
+# (start talking about immutability)
+
+---
+
+# (some code using map, filter and reduce)
+
+---
+
+# (talk about immutability x performance)
+
+## (also maybe talk about the tree thing that reutilize nodes to save cpu/ram usage)
+
+---
+
+# (discuss about JS as a fp capable language)

@@ -979,6 +979,13 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
+"@rebass/emotion@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@rebass/emotion/-/emotion-3.1.1.tgz#909346c831be978dcabd5ae9724fc52ddd3d1109"
+  integrity sha512-6Wz73cL/Sb5tL/c9yDd7HcwaPQs5fAcuU6yTiaUhoWgiJAGnR6GCHoaU5Lf6YfEJXEzXJRBj7I+G8VpRlX9vpg==
+  dependencies:
+    styled-system "^4.0.8"
+
 "@types/node@*":
   version "12.6.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.6.2.tgz#a5ccec6abb6060d5f20d256fb03ed743e9774999"
@@ -5576,7 +5583,7 @@ style-to-object@^0.2.1:
   dependencies:
     inline-style-parser "0.1.1"
 
-styled-system@^4.0.1:
+styled-system@^4.0.1, styled-system@^4.0.8:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-4.2.4.tgz#8909f91396c30b92295b4eddec5f7b89f8c8d767"
   integrity sha512-44X7n09gDvwx7yjquEXsjiNALK0dxGgAJdpO5cb/PdL+D4mhSLKWig4/EhH4vHJLbwu/kumURHyvKxygaBfg0A==
