@@ -1,3 +1,3 @@
 # fp-tech-talk
 
-yarn startt
+`yarn start`
