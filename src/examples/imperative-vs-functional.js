@@ -1,10 +1,9 @@
-const { Box, fromNullable, pipe } = require("./utils");
+const { Box, fromNullable, pipe } = require("../utils");
 
 const juices = {
   maracuja: "$2.50",
-  pitanga: "$1.0",
-  graviola: "$2.0",
-  caja: "$1.5"
+  graviola: "$2.00",
+  caja: "$1.50"
 };
 
 const trim = str => str.trim();
@@ -61,20 +60,14 @@ const prepareStr = str =>
     toLowerCase
   )(str);
 
-const getJuicePrice = str =>
-  Box(str)
-    .map(prepareStr)
+const getJuicePrice = str => {
+  const preparedString = prepareStr(str);
+  return Box(preparedString)
     .map(removeAccents)
     .chain(s => fromNullable(juices[s]))
-    .fold(
-      e =>
-        pipe(
-          prepareStr,
-          notAvailableMessage
-        )(str),
-      s => s
-    );
+    .fold(e => notAvailableMessage(preparedString), s => s);
+};
 
 const result = getJuicePrice("    Maracujá  "); // $1.50
-// const result = getJuicePrice('    uva '); // sorry, but uva juice is not available
+// const result = getJuicePrice("    uva "); // sorry, but uva juice is not available
 console.log(result);

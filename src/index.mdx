@@ -1,7 +1,11 @@
 import gistia from "./themes/gistia";
-import { Split, Invert } from "@mdx-deck/layouts";
-import { Appear, Image } from "@mdx-deck/components";
+import { Image } from "mdx-deck";
+import { Split, FullScreenCode } from "@mdx-deck/layouts";
 import { syntaxHighlighter } from "mdx-deck/themes";
+import ImageBackground from "./components/image-background";
+import AppearList from "./components/appear-list";
+import Plot from "./components/plot";
+import _ from "lodash";
 
 export const themes = [syntaxHighlighter, gistia];
 
@@ -19,43 +23,21 @@ export const themes = [syntaxHighlighter, gistia];
 
 ---
 
-import Box from "./components/box";
-
-<Image
-  src='images/marie-kondo.jpg'
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }}>
-
-<Box>about things that bring me joy!</Box>
-
-</Image>
+<ImageBackground src="images/marie-kondo.jpg">
+  about things that bring me joy!
+</ImageBackground>
 
 ---
 
 # got curious?
 
-<ul>
-  <Appear>
-    <li>math</li>
-    <li>juice</li>
-    <li>dürum falafel</li>
-    <li>keyboards</li>
-  </Appear>
-</ul>
+<AppearList items={["juice", "math", "döner kebab", "keyboards"]} />
 
 ---
 
 # also...
 
-<ul>
-  <Appear>
-    <li>functional programming</li>
-    <li>JS</li>
-  </Appear>
-</ul>
+<AppearList items={["functional programming", "JS"]} />
 
 ---
 
@@ -67,35 +49,17 @@ import Box from "./components/box";
 
 ---
 
-<FullScreenCode
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '20px'
-  }}>
+<Split>
 
-```
-const juices = {
-  maracuja: '$1.50',
-  pitanga: '$1.0',
-  graviola: '$2.0',
-  caja: '$1.5'
-};
+![imperative code](images/imperative-vs-functional/imperative.svg)
 
-// imperative way
-const getJuicePrice = str => {
-  const trimmed = str.trim()
-  const withoutAccents = trimmed.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  return juices[withoutAccents] || 'sorry, but this juice is not available!'
-}
-```
+![functional code](images/imperative-vs-functional/functional.svg)
 
-</FullScreenCode>
+</Split>
 
 ---
 
-> “oh ok, that sounds cool, BUT... does it mean I need to throw away everything I've learned in all those years programming in [insert your preferable non-fp oriented programming language] if I want to dive into fp?”
+> “do I need to throw away everything I've learned programming in [*insert a non-fp language*] if I want to dive into fp?”
 
 ---
 
@@ -103,73 +67,220 @@ no, you do not! however, since most of us are used to imperative programming, yo
 
 ---
 
-# this slide should talk about what you can "save" from imperative programming and which new skills you need to develop
+# fp's cornestones
+
+<AppearList
+  items={["pure functions", "first-class functions", "immutability"]}
+/>
 
 ---
 
-# functional programming's most primitive principles:
-
-- pure functions
-- immutability
+<ImageBackground src="images/nazare.jpg">pure functions</ImageBackground>
 
 ---
 
-# pure functions
-
-## this slide should have the nazare's meme
+# yep, that's exactly what it's looking like: math time!
 
 ---
 
-# yep, that's exactly what it is looking like: math time!
-
-## _what on earth this pure function thing has to do with math???_
-
-## _SPOILER ALERT_
-
-## EVERYTHING!
+## in math, a function is nothing more than a relation between two sets, where one set is mapped to the other
 
 ---
 
-# first of all, let's talk about what is considered a function in the awesome math world
+## however, this mapping has to follow a simple rule:
 
-## a function is nothing more than a relation between two conjuntos numéricos, where one cojunto is mapped to the other one
-
-### however, this mapping has to follow some basic rules
+### a given input will _always_ return the same output
 
 ---
 
-# a given input will alawys return the same output (draw a vann diagram somehow to explain this)
+<Split>
+
+<Plot x={[1, 2, 3]} y={[2, 4, 6]} title="y = 2 * x" />
+
+<Plot
+  x={_.range(-3, 3, 0.1)}
+  y={_.range(-3, 3, 0.1).map(x => x ** 2)}
+  title="y = x ** 2"
+/>
+
+</Split>
 
 ---
 
-# (I need to remember if there is any other rule hahaha)
+<Plot
+  x={_.range(-3, 3, 0.1).map(x => x ** 2)}
+  y={_.range(-3, 3, 0.1)}
+  title="x = y ** 2"
+/>
+
+## y = sqrt(x) || y = - sqrt(x)
 
 ---
 
-# (this should contain some code comparing impure and pure functions)
+<div style={{ display: 'flex' }}>
+
+<div
+   style={{
+    fontSize: '14px',
+    margin: '0.5rem',
+    maxHeight: '900px',
+    width: '800px',
+    backgroundColor: '#F0F0F0'
+   }}>
 
 ```jsx
-<div>hey there!</div>
+const mechanicalKeyboardSwitches = [
+  ["gateron yellow", "linjar", "greetech black", "gateron clear", "kbt red"], // linears
+  ["outemu sky", "cherry mx brown", "halo true", "kailh pro purple"], // tactiles
+  ["outemu blue"] // clickies
+];
+
+// impure
+const minimum = 5;
+const checkExperienceImpure = xs =>
+  xs.map(switches => switches.length >= minimum);
+
+// pure
+const checkExperiencePure = xs => {
+  const minimum = 5; // const immutableState = Object.freeze({ minimum: 5 })
+  return xs.map(switches => switches.length >= minimum);
+};
+
+checkExperienceImpure(mechanicalKeyboardSwitches); // [ true, false, false ]
+checkExperiencePure(mechanicalKeyboardSwitches); // [ true, false, false ]
 ```
 
+</div>
+
+<div
+   style={{
+    fontSize: '14px',
+    margin: '0.5rem',
+    height: '900px',
+    width: '800px',
+    backgroundColor: '#F0F0F0'
+   }}>
+
+```jsx
+// impure
+const addLinearSwitch = (xs, idx, str) => xs[idx].push(str);
+addLinearSwitch(mechanicalKeyboardSwitches, 0, "mx cherry retooled black");
+console.log(mechanicalKeyboardSwitches);
+/*
+[ [ 'gateron yellow',
+    'linjar',
+    'greetech black',
+    'gateron clear',
+    'kbt red',
+    'mx cherry retooled black' ],
+  [ 'outemu sky',
+    'cherry mx brown',
+    'halo true',
+    'kailh pro purple' ],
+  [ 'outemu blue' ] ]
+*/
+
+// pure
+const addLinearSwitchPure = (xs, idx, str) => {
+  const linearArr = xs[idx].concat([str]);
+  const clone = xs.slice(0);
+  clone[idx] = linearArr;
+  return clone;
+};
+
+const res = addLinearSwitchPure(mechanicalKeyboardSwitches, 0, "gateron ink");
+console.log(mechanicalKeyboardSwitches);
+/*
+[ [ 'gateron yellow',
+    'linjar',
+    'greetech black',
+    'gateron clear',
+    'kbt red',
+    'mx cherry retooled black' ],
+  [ 'outemu sky',
+    'cherry mx brown',
+    'halo true',
+    'kailh pro purple' ],
+  [ 'outemu blue' ] ]
+*/
+
+console.log(res);
+/*
+[ [ 'gateron yellow',
+    'linjar',
+    'greetech black',
+    'gateron clear',
+    'kbt red',
+    'mx cherry retooled black',
+    'gateron ink' ],
+  [ 'outemu sky',
+    'cherry mx brown',
+    'halo true',
+    'kailh pro purple' ],
+  [ 'outemu blue' ] ]
+*/
+```
+
+</div>
+
+</div>
+
 ---
 
-# (talk about typed languages and use the elephant example)
+> “but I'm writing TS code, I don't need to bother! my functions are typed!”
 
 ---
 
-# (start talking about immutability)
+<ImageBackground src="images/first-class.jpeg">
+  first-class functions
+</ImageBackground>
 
 ---
 
-(some code using map, filter and reduce)
+![](images/first-class-functions.svg)
 
 ---
 
-(talk about immutability x performance)
-
-(also maybe talk about the tree thing that reutilize nodes to save cpu/ram usage)
+![](images/doner-kebab.svg)
 
 ---
 
-(discuss about JS as a fp capable language)
+![](images/my-keyboard-collection.jpg)
+
+---
+
+![](images/keyboards.svg)
+
+---
+
+<ImageBackground src="images/big-mac.png">immutability</ImageBackground>
+
+---
+
+> “[...] the true constant is change. mutation hides change. hidden change creates chaos.”
+
+_eric elliot_
+
+---
+
+![](images/immutability.svg)
+
+---
+
+what if my original object has OVER 9000 attributes?
+
+---
+
+<Image src="images/vegeta.jpg" />
+
+---
+
+![](images/over-9000.svg)
+
+---
+
+![](images/immutable-js.svg)
+
+---
+
+thanks!
