@@ -1,3 +1,6 @@
 # fp-tech-talk
 
-`yarn start`
+## Instructions
+
+- `yarn install`
+- `yarn start`
