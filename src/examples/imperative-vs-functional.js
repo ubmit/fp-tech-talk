@@ -54,20 +54,20 @@ const getJuicePrice = str =>
     .fold(e => 'error', s => s);
 */
 
-const prepareStr = str =>
-  pipe(
-    trim,
-    toLowerCase
-  )(str);
+const prepareStr = pipe(
+  trim,
+  toLowerCase
+);
 
-const getJuicePrice = str => {
-  const preparedString = prepareStr(str);
+const getJuicePrice = prepareInput => inputValue => {
+  const preparedString = prepareInput(inputValue);
+
   return Box(preparedString)
     .map(removeAccents)
     .chain(s => fromNullable(juices[s]))
     .fold(e => notAvailableMessage(preparedString), s => s);
 };
 
-const result = getJuicePrice("    Maracujá  "); // $1.50
+const result = getJuicePrice(prepareStr)("    Maracujá  "); // $2.50
 // const result = getJuicePrice("    uva "); // sorry, but uva juice is not available
 console.log(result);

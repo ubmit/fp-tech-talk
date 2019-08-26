@@ -75,7 +75,7 @@ const First = x => ({
 
 const liftA2 = (f, fx, fy) => fx.map(f).ap(fy);
 
-const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
+const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
 
 module.exports = {
   Box,
