@@ -1,16 +1,24 @@
-const prepareJuice = fruit => `your ${fruit} juice is ready`;
-const getJuice = prepareJuice;
-getJuice("maracuja"); // "your maracuja juice is ready"
+// A function can be assigned to a variable
 
-// const getMixedJuice = (f1, f2) =>
-//   console.log(`your ${f1} mixed with ${f2} juice is ready`);
+const foo = (x, y) => x + y
 
-const getMixedJuice = f1 => f2 => `your ${f1} mixed with ${f2} juice is ready`;
+const add = foo
+add(1, 2) // 3
 
-const getSomethingWithMaracujaJuice = getMixedJuice("maracuja");
-getSomethingWithMaracujaJuice("pitanga"); // "your maracuja mixed with pitanga juice is ready"
+// A function can be an argument of another function
 
-const firstResult = getJuice("maracuja");
-const secondResult = getSomethingWithMaracujaJuice("pitanga");
-console.log(firstResult);
-console.log(secondResult);
+const fibonacci = [0, 1, 1, 2, 3, 5, 8]
+
+fibonacci.map(checkPrice) // [ true, true, true, true, false, false, false ]
+
+fibonacci.filter(checkPrice) // [ 0, 1, 1, 2 ]
+
+fibonacci.reduce(add) // 20
+
+// A function can be returned from another function
+
+const checkPrice = max => price => price <= max
+
+const checkPriceBelowOrEqualTwo = checkPrice(2)
+
+checkPriceBelowOrEqualTwo(5) // false

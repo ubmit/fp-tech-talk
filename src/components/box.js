@@ -1,9 +1,7 @@
-import { Box } from "@rebass/emotion";
-import palette from "../themes/palette";
-const { primary, secondary } = palette;
+import { Box } from '@rebass/emotion'
 
 export default props => (
-  <Box fontSize={[6, 7]} p={4} color={secondary} bg={primary}>
+  <Box fontSize={[6, 7]} p={4} color="#000" bg="#fff">
     {props.children}
   </Box>
-);
+)

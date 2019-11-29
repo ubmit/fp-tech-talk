@@ -1,19 +1,21 @@
-import gistia from "./themes/gistia";
-import { Image } from "mdx-deck";
+import { Image, Notes } from "mdx-deck";
 import { Split, FullScreenCode } from "@mdx-deck/layouts";
-import { syntaxHighlighter } from "mdx-deck/themes";
-import ImageBackground from "./components/image-background";
-import AppearList from "./components/appear-list";
-import Plot from "./components/plot";
+import { dark } from "mdx-deck/themes";
+import { ImageBackground, AppearList, Plot } from "./components"
 import _ from "lodash";
 
-export const themes = [syntaxHighlighter, gistia];
+export const themes = [dark];
 
-# tech talk #2
+# functional programming in JS
 
-## functional programming in JS
-
-### guilherme de andrade
+<Notes>
+  The functional paradigm has noticeably grown in the past few months.
+  Previously, there were a number of different functional languages with good JavaScript
+  intertop created.
+  Some of those languages included PureScript, ClojureScript, Elm and ReasonML
+  (note that ReasonML is not exactly a language, it is actually a new syntax and toolchain powered by OCaml)
+  to help create solutions to real-world problems.
+</Notes>
 
 ---
 
@@ -23,7 +25,7 @@ export const themes = [syntaxHighlighter, gistia];
 
 ---
 
-<ImageBackground src="images/marie-kondo.jpg">
+<ImageBackground src="./images/marie-kondo.jpg">
   about things that bring me joy!
 </ImageBackground>
 
@@ -31,7 +33,7 @@ export const themes = [syntaxHighlighter, gistia];
 
 # got curious?
 
-<AppearList items={["juice", "math", "döner kebab", "keyboards"]} />
+<AppearList items={["juice", "math", "memes"]} />
 
 ---
 
@@ -47,23 +49,105 @@ export const themes = [syntaxHighlighter, gistia];
 
 # nope! _fp_ is as old as my _grandma_
 
+<Notes>
+  FP, however, is not all that new and in fact is quite old!
+  It started with LISP at 1968 and came from a project led by John McCarthy at MIT.
+</Notes>
+
+___
+
+# why should I care?
+
+<Notes>
+  Now, you may be asking yourself whether or not you should care about FP.
+  To help answer this question, let’s take a look at a problem being solved in a “more standard way” (imperative programming)
+  and compare it to the “functional way.”
+</Notes>
+
 ---
 
-<Split>
+```js
+const juices = {
+  maracuja: '$2.50',
+  graviola: '$2.00',
+  caja: '$1.50',
+}
 
-![imperative code](images/imperative-vs-functional/imperative.svg)
+// standard
+const getJuicePrice = inputValue => {
+  const trimmed = trim(inputValue)
+  const lowered = toLowerCase(trimmed)
+  const withoutAccents = removeAccents(lowered)
+  return juices[withoutAccents] || 'error'
+}
 
-![functional code](images/imperative-vs-functional/functional.svg)
+// functional
+const getJuicePrice = inputValue =>
+  Box(inputValue)
+    .map(trim)
+    .map(toLowerCase)
+    .map(removeAccents)
+    .chain(juiceName => fromNullable(juices[juiceName]))
+    .fold(
+      e => 'error',
+      price => price
+    )
 
-</Split>
+getJuicePrice('   maracujá     ') // "$2.50"
+```
+
+<Notes>
+  Notice how much easier it is to understand the functional code because everything is following the same flow.
+  You don’t need to scroll up and down multiple times, as you do most of the time when trying to understand an imperative code.
+  Don’t worry about the elements in the functional code that look strange to you,
+  the goal here is to point out the structural differences between those two paradigms.
+</Notes>
 
 ---
+
+```js
+const compose = (...fns) => arg => fns.reduceRight((prev, fn) => fn(prev), arg)
+
+const pipe = (...fns) => arg => fns.reduce((prev, fn) => fn(prev), arg)
+
+const prepareInput = compose(removeAccents, toLowerCase, trim)
+
+const prepareInput = pipe(trim, toLowerCase, removeAccents)
+
+const getJuicePrice = inputValue =>
+  Box(inputValue)
+    .map(prepareInput)
+    .chain(juiceName => fromNullable(juices[juiceName]))
+    .fold(e => 'error', price => price)
+```
+
+<Notes>
+  Another beneficial aspect is how easy it is to compose functions together, either using compose itself or pipe.
+  Both functions are easy to define and achieve the same final result.
+
+  The difference here is the ordering: when using compose, the functions are called from right to left;
+  when using pipe, from left to right.
+  The prepareInput function in the given example calls trim first, then toLowerCase and finally removeAccents.
+  compose is closer to the mathematical definition of composite functions, though.
+  In math, a composite function can be described as f(g(x)) or f∘g, where g, the one that is most to the right,
+  is applied first and f is applied directly after.
+
+  Predictability is another thing you gain by using FP.
+  This is because the functions are written in such a way that they will always return the same output for any given input,
+  without side-effects. Those functions are called pure functions and we will talk more about them later in this article.
+
+  When bundled with predictability, you will have an easier to refactor code, simply because you always know what is needed
+  to receive or return.
+</Notes>
+
+___
 
 > “do I need to throw away everything I've learned programming in [*insert a non-fp language*] if I want to dive into fp?”
 
----
-
-no, you do not! however, since most of us are used to imperative programming, you would need to refactor your knowledge, so it could fit the fp way!
+<Notes>
+  No, you do not! however, since most of us are used to imperative programming,
+  you would need to refactor your knowledge, so it could fit the fp way!
+</Notes>
 
 ---
 
@@ -75,34 +159,48 @@ no, you do not! however, since most of us are used to imperative programming, yo
 
 ---
 
-<ImageBackground src="images/nazare.jpg">pure functions</ImageBackground>
+<ImageBackground src="../images/nazare.jpg">pure functions</ImageBackground>
 
 ---
 
 # yep, that's exactly what it's looking like: math time!
 
----
-
-## in math, a function is nothing more than a relation between two sets, where one set is mapped to the other
-
----
-
-## however, this mapping has to follow a simple rule:
-
-### a given input will _always_ return the same output
+<Notes>
+  The concept of a pure function comes from mathematics.
+  To fully understand it, let’s take a step back and discuss the mathematical definition of a function.
+</Notes>
 
 ---
 
-<Split>
+> “A function is a relation between two sets (A and B), where A is a set of inputs and B is a set of possible outputs. However, each input must be related to exactly one output.”
 
-<Plot x={[1, 2, 3]} y={[2, 4, 6]} title="y = 2 * x" />
+<Notes>
+  In math, a function is nothing more than a relation between two sets, where one set is mapped to the other.
+  However, this mapping has to follow a simple rule: a given input will always return the same output.
+</Notes>
 
-<Plot
-  x={_.range(-3, 3, 0.1)}
-  y={_.range(-3, 3, 0.1).map(x => x ** 2)}
-  title="y = x ** 2"
+---
+
+# this definition brings up some interesting things:
+
+<AppearList
+  items={[
+    "an input cannot be related to multiple outputs, it must be related to a single one",
+    "a function doesn’t care about its context, it only cares about returning an output for a given input",
+    "a function not only doesn’t care about its context, it also doesn’t bother affecting it"
+  ]}
 />
 
+___
+
+<Split>
+  <Plot x={[1, 2, 3]} y={[2, 4, 6]} title="y = 2 * x" />
+
+  <Plot
+    x={_.range(-3, 3, 0.1)}
+    y={_.range(-3, 3, 0.1).map(x => x ** 2)}
+    title="y = x ** 2"
+  />
 </Split>
 
 ---
@@ -117,143 +215,84 @@ no, you do not! however, since most of us are used to imperative programming, yo
 
 ---
 
-<div style={{ display: 'flex' }}>
-
-<div
-   style={{
-    fontSize: '14px',
-    margin: '0.5rem',
-    maxHeight: '900px',
-    width: '800px',
-    backgroundColor: '#F0F0F0'
-   }}>
-
-```jsx
-const mechanicalKeyboardSwitches = [
-  ["gateron yellow", "linjar", "greetech black", "gateron clear", "kbt red"], // linears
-  ["outemu sky", "cherry mx brown", "halo true", "kailh pro purple"], // tactiles
-  ["outemu blue"] // clickies
-];
-
+```js
 // impure
-const minimum = 5;
-const checkExperienceImpure = xs =>
-  xs.map(switches => switches.length >= minimum);
+let max = 2.0
+const checkPriceImpure = n => n <= max
 
 // pure
-const checkExperiencePure = xs => {
-  const minimum = 5; // const immutableState = Object.freeze({ minimum: 5 })
-  return xs.map(switches => switches.length >= minimum);
-};
-
-checkExperienceImpure(mechanicalKeyboardSwitches); // [ true, false, false ]
-checkExperiencePure(mechanicalKeyboardSwitches); // [ true, false, false ]
+const checkPrice = price => {
+  const max = 2.0
+  return price <= max
+}
 ```
 
-</div>
-
-<div
-   style={{
-    fontSize: '14px',
-    margin: '0.5rem',
-    height: '900px',
-    width: '800px',
-    backgroundColor: '#F0F0F0'
-   }}>
-
-```jsx
-// impure
-const addLinearSwitch = (xs, idx, str) => xs[idx].push(str);
-addLinearSwitch(mechanicalKeyboardSwitches, 0, "mx cherry retooled black");
-console.log(mechanicalKeyboardSwitches);
-/*
-[ [ 'gateron yellow',
-    'linjar',
-    'greetech black',
-    'gateron clear',
-    'kbt red',
-    'mx cherry retooled black' ],
-  [ 'outemu sky',
-    'cherry mx brown',
-    'halo true',
-    'kailh pro purple' ],
-  [ 'outemu blue' ] ]
-*/
-
-// pure
-const addLinearSwitchPure = (xs, idx, str) => {
-  const linearArr = xs[idx].concat([str]);
-  const clone = xs.slice(0);
-  clone[idx] = linearArr;
-  return clone;
-};
-
-const res = addLinearSwitchPure(mechanicalKeyboardSwitches, 0, "gateron ink");
-console.log(mechanicalKeyboardSwitches);
-/*
-[ [ 'gateron yellow',
-    'linjar',
-    'greetech black',
-    'gateron clear',
-    'kbt red',
-    'mx cherry retooled black' ],
-  [ 'outemu sky',
-    'cherry mx brown',
-    'halo true',
-    'kailh pro purple' ],
-  [ 'outemu blue' ] ]
-*/
-
-console.log(res);
-/*
-[ [ 'gateron yellow',
-    'linjar',
-    'greetech black',
-    'gateron clear',
-    'kbt red',
-    'mx cherry retooled black',
-    'gateron ink' ],
-  [ 'outemu sky',
-    'cherry mx brown',
-    'halo true',
-    'kailh pro purple' ],
-  [ 'outemu blue' ] ]
-*/
-```
-
-</div>
-
-</div>
+<Notes>
+  Note that the impure version of checkPrice function depends on the context,
+  because it’s using a variable that is defined outside of its scope, which is max.
+  If either someone or a side-effect changes max value,
+  the checkPrice function won’t work as expected anymore.
+</Notes>
 
 ---
 
-> “but I'm writing TS code, I don't need to bother! my functions are typed!”
+> “but I'm writing TypeScript code, I don't need to bother! my functions are typed!”
+
+<Notes>
+  Well, that's not true at all! If you order a maracujá juice, TS could
+  let you receive an apple juice instead, because it is still a juice type.
+</Notes>
 
 ---
 
-<ImageBackground src="images/first-class.jpeg">
+<ImageBackground src="../images/first-class.jpeg">
   first-class functions
 </ImageBackground>
 
 ---
 
-![](images/first-class-functions.svg)
+```js
+const foo = (x, y) => x + y
+
+const add = foo
+add(1, 2) // 3
+```
+
+<Notes>A function can be assigned to a variable</Notes>
+
+___
+
+```js
+const fibonacci = [0, 1, 1, 2, 3, 5, 8]
+
+fibonacci.map(checkPrice) // [ true, true, true, true, false, false, false ]
+
+fibonacci.filter(checkPrice) // [ 0, 1, 1, 2 ]
+
+fibonacci.reduce(add) // 20
+```
+
+<Notes>A function can be an argument of another function</Notes>
+
+___
+
+```js
+const checkPrice = max => price => price <= max
+
+const checkPriceBelowOrEqualTwo = checkPrice(2)
+
+checkPriceBelowOrEqualTwo(5) // false
+```
+<Notes>A function can be returned from another function (currying)</Notes>
 
 ---
 
-![](images/doner-kebab.svg)
+<ImageBackground src="../images/big-rock.jpg">immutability</ImageBackground>
 
----
-
-![](images/my-keyboard-collection.jpg)
-
----
-
-![](images/keyboards.svg)
-
----
-
-<ImageBackground src="images/big-mac.png">immutability</ImageBackground>
+<Notes>
+  You want yours data structures to be as immutable as a big rock,
+  which just... stands there where it is supposed to be.
+</Notes>
 
 ---
 
@@ -263,24 +302,66 @@ _eric elliot_
 
 ---
 
-![](images/immutability.svg)
+```js
+const juice = {
+  fruit: 'maracujá',
+  ordered: {
+    friday: 12,
+  },
+}
+
+const updatedJuice = {
+  ...juice,
+  ordered: {
+    friday: {
+      withSugar: 10,
+      withoutSugar: 2,
+    },
+  },
+}
+
+console.log(juice)
+// { fruit: 'maracujá', ordered: { friday: 12 } }
+
+console.log(updatedJuice)
+// { fruit: 'maracujá',  ordered: { friday: { withSugar: 10, withoutSugar: 2 } } }
+
+const juices = ['maracujá', 'manga', 'cajá']
+
+const newJuices = [...juices, 'goiaba']
+
+console.log(newJuices) // [ 'maracujá', 'manga', 'cajá', 'goiaba' ]
+```
+
+<Notes>
+  Immutable data structures cannot be modified after they are defined.
+  In JavaScript, however, only primitive values are immutable by default.
+  When working with objects (note that in JavaScript arrays are objects),
+  some workaround has to be done.
+
+  Object.freeze() and const aren’t really useful for objects.
+  Object.freeze() won’t avoid the mutation of nested objects and const,
+  well, it will only avoid reassigning the variable, but properties can be added,
+  deleted or edited.
+
+  There are also libraries such as Immer and Immutable that were created to make our
+  lives easier while dealing with immutability in JavaScript.
+</Notes>
 
 ---
 
-what if my original object has OVER 9000 attributes?
+<ImageBackground src="../images/dive-deeper.jpg">dive deeper</ImageBackground>
+
+<Notes>
+  Fortunately, as it has been shown in this article,
+  it’s definitely possible to use functional programming with plain JavaScript.
+  However, if you really want to dive deeper into this paradigm while using JavaScript,
+  you’ll probably want to use some already existing functional libraries
+  such as Sanctuary, Fluture, Ramda and others.
+</Notes>
 
 ---
 
-<Image src="images/vegeta.jpg" />
+# thanks!
 
----
-
-![](images/over-9000.svg)
-
----
-
-![](images/immutable-js.svg)
-
----
-
-thanks!
+[github.com/guilhermedeandrade/fp-tech-talk](https://github.com/guilhermedeandrade/fp-tech-talk)

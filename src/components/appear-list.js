@@ -1,4 +1,4 @@
-import { Appear } from "@mdx-deck/components";
+import { Appear } from '@mdx-deck/components'
 
 export default props => (
   <ul>
@@ -8,4 +8,4 @@ export default props => (
       ))}
     </Appear>
   </ul>
-);
+)

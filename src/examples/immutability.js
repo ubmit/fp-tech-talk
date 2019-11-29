@@ -1,50 +1,28 @@
-const keyboard = {
-  name: "unikorn",
-  color: "purple",
-  switches: "gateron ink",
-  springWeight: 61
-};
+const juice = {
+  fruit: 'maracujá',
+  ordered: {
+    friday: 12,
+  },
+}
 
-// imperative way
-const getHeavier = keeb => {
-  keeb.springWeight++;
-};
+const updatedJuice = {
+  ...juice,
+  ordered: {
+    friday: {
+      withSugar: 10,
+      withoutSugar: 2,
+    },
+  },
+}
 
-getHeavier(keyboard);
-console.log(keyboard);
-/*
-{ name: 'unikorn',
-  color: 'purple',
-  switches: 'gateron ink',
-  springWeight: 62 }
-*/
+console.log(juice)
+// { fruit: 'maracujá', ordered: { friday: 12 } }
 
-// functional way
-const getHeavier = keeb => ({
-  name: keeb.name,
-  color: keeb.color,
-  switches: keeb.switches,
-  springWeight: keeb.springWeight + 1
-});
+console.log(updatedJuice)
+// { fruit: 'maracujá',  ordered: { friday: { withSugar: 10, withoutSugar: 2 } } }
 
-console.log(keyboard);
-/*
-{ name: 'unikorn',
-  color: 'purple',
-  switches: 'gateron ink',
-  springWeight: 61 }
-*/
+const juices = ['maracujá', 'manga', 'cajá']
 
-const res = getHeavier(keyboard);
-console.log(res);
-/*
-{ name: 'unikorn',
-  color: 'purple',
-  switches: 'gateron ink',
-  springWeight: 62 }
-*/
+const newJuices = [...juices, 'goiaba']
 
-const getHeavier = ({ springWeight, ...rest }) => ({
-  springWeight: springWeight + 1,
-  ...rest
-});
+console.log(newJuices) // [ 'maracujá', 'manga', 'cajá', 'goiaba' ]

@@ -1,8 +1,4 @@
 {
-  "devDependencies": {
-    "mdx-deck": "^2.5.0",
-    "prettier": "^1.18.2"
-  },
   "scripts": {
     "start": "mdx-deck src/index.mdx",
     "build": "mdx-deck build src/index.mdx"
@@ -11,6 +7,7 @@
     "@rebass/emotion": "^3.1.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.14",
+    "mdx-deck": "^2.5.0",
     "plotly.js": "^1.48.3",
     "react-plotly.js": "^2.3.0"
   }
